@@ -5,7 +5,7 @@
 var svg;
 var root;
 var mappging = [];
- var selected_object = null;
+var selected_object = null;
 var dataA;
 
 function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
@@ -41,6 +41,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
      // this is how the UI knows which explain-text to highlight
     $scope.current_animation_step = 0;
 
+<<<<<<< Updated upstream
     $scope.hide = function () {
         $mdDialog.hide();
     };
@@ -49,6 +50,8 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
     };
 
 
+=======
+>>>>>>> Stashed changes
     var margin = {top: 20, right: 120, bottom: 20, left: 120},
         width = 1000 - margin.right - margin.left,
         height = 800 - margin.top - margin.bottom;
@@ -66,8 +69,6 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
         });
 
     var zoom = d3.behavior.zoom().scaleExtent([0, 1]).translate([120, 20]).on("zoom", zoomed);
-
-
 
 
     /*
@@ -89,29 +90,29 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
     function objMapping(root, deletableObjejects) {
 
-        if(root.type == "object") {
-            if(root.parent != null)
-                if(deletableObjejects.indexOf(root.name) > -1)
+        if (root.type == "object") {
+            if (root.parent != null)
+                if (deletableObjejects.indexOf(root.name) > -1)
                     mappging.push(root);
         }
-        else{
-            if(root.children){
+        else {
+            if (root.children) {
                 root.children.forEach(function (d) {
                     objMapping(d, deletableObjejects);
                 });
             }
-            if(root._children){
-                 root._children.forEach(function (d) {
+            if (root._children) {
+                root._children.forEach(function (d) {
                     objMapping(d, deletableObjejects);
                 });
             }
-            if(root.siblings_up){
-                 root.siblings_up.forEach(function (d) {
+            if (root.siblings_up) {
+                root.siblings_up.forEach(function (d) {
                     objMapping(d, deletableObjejects);
                 });
             }
-            if(root.siblings_down){
-                 root.siblings_down.forEach(function (d) {
+            if (root.siblings_down) {
+                root.siblings_down.forEach(function (d) {
                     objMapping(d, deletableObjejects);
                 });
             }
@@ -147,7 +148,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
         update(root);
 
 
-        if(data.sdos_batch_delete_log.length){
+        if (data.sdos_batch_delete_log.length) {
             loadNode(root, data.sdos_batch_delete_log, data);
         }
 
@@ -161,24 +162,24 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
         d3.select("#cascadeRendering").append("input")
             .attr("type", "button")
-            .attr("value",  "next")
-            .on("click", function (){
-                if(selected_object.length == 1)
+            .attr("value", "next")
+            .on("click", function () {
+                if (selected_object.length == 1)
                     stepAnimation(selected_object);
-                else if(selected_object.length > 1)
+                else if (selected_object.length > 1)
                     stepAnimationMultiple(selected_object, 1);
             });
 
-         d3.select("#cascadeRendering").append("input")
+        d3.select("#cascadeRendering").append("input")
             .attr("type", "button")
-            .attr("value",  "delete")
-            .on("click", function (){
+            .attr("value", "delete")
+            .on("click", function () {
                 deleteAnimation(selected_object);
             });
 
         var delete_text = d3.select("#cascadeRendering").append("input")
             .attr("type", "text")
-            .attr("disabled",  "disabled")
+            .attr("disabled", "disabled")
             .attr("id", "delete_text")
             .attr("size", 100);
 
@@ -240,15 +241,15 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
             });
 
         /*
-        *  Button and camp text delete
-        * */
-
+         *  Button and camp text delete
+         * */
 
 
     }
+
     /*
-    * Ends rendering functions
-    * */
+     * Ends rendering functions
+     * */
 
 
     /* Zoom functions area
@@ -314,17 +315,17 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
 
     /*
-    *
-    * Selecting path and objects functions
-    *
-    * */
+     *
+     * Selecting path and objects functions
+     *
+     * */
     function loadNode(source, objects, data) {
         var path = [];
         var aux;
 
         aux = searchParent(objects, data.objectMapping);
 
-        multipleLeafsPath(source,aux, data.partitionSize, path);
+        multipleLeafsPath(source, aux, data.partitionSize, path);
         closeTree(source, path);
         update(root);
         objMapping(root, data.sdos_batch_delete_log);
@@ -333,14 +334,14 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
         //console.log(mappging);
     }
 
-    function searchParent(objects, objMapping){
+    function searchParent(objects, objMapping) {
         var parentsChildren = [];
         var i = 0;
 
-        for(var parent in objMapping){
+        for (var parent in objMapping) {
             objMapping[parent].forEach(function (d) {
 
-                if(objects.indexOf(d.objName) > -1){
+                if (objects.indexOf(d.objName) > -1) {
                     parentsChildren[i] = parent.toString() + "|" + d.objName.toString();
                     i++;
                 }
@@ -359,7 +360,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
         var path = [];
         var aux = text.property("value").toString();
 
-        multipleLeafsPath(source,[aux], data.partitionSize, path);
+        multipleLeafsPath(source, [aux], data.partitionSize, path);
         closeTree(source, path);
         update(root);
         objMapping(root, data.sdos_batch_delete_log);
@@ -369,7 +370,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
     }
 
-    function multipleLeafsPath(source,list, ps, path) {
+    function multipleLeafsPath(source, list, ps, path) {
         var multiplePath = [];
         var objects = [];
         var open = [];
@@ -391,12 +392,16 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
         console.log(open);
 
+<<<<<<< Updated upstream
        // if(objects.length == 1){ //Search one just object
+=======
+        if (objects.length == 1) { //Search one just object
+>>>>>>> Stashed changes
             open.forEach(function (op) {
                 console.log(op);
                 var found = 0;
                 var down = 1;
-                while(!found) {
+                while (!found) {
 
                     //look if the object is in children
                     op[1].children.forEach(function (d) {
@@ -406,7 +411,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
                     });
 
-                    if(!found){
+                    if (!found) {
                         //go siblings down
                         if (down) {
                             siblingsDown(op[1].children[op[1].children.length - 1], op[1]);
@@ -438,11 +443,11 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
         if (number > 0) {
             var parent = parseInt((number - 1) / ps);
 
-            if(path.indexOf(number) < 0)
+            if (path.indexOf(number) < 0)
                 path.push(number);
             leafPath(parent, ps, path);
         } else {
-            if(path.indexOf(0) < 0)
+            if (path.indexOf(0) < 0)
                 path.push(0);
         }
     }
@@ -462,11 +467,11 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
         // take all children to be selected
         var uz = [];
-        if(source.children != null)
+        if (source.children != null)
             uz = uz.concat(source.children);
-        if(source.siblings_down != null)
+        if (source.siblings_down != null)
             uz = uz.concat(source.siblings_down);
-        if(source.siblings_up != null)
+        if (source.siblings_up != null)
             uz = uz.concat(source.siblings_up);
 
 
@@ -480,10 +485,10 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
                  *  */
 
                 /*
-                * NOTE: assume that this function will be use to mark all nodes
-                * once and will be not another "search"
-                * if it is, probably will be in the case of "else"
-                * */
+                 * NOTE: assume that this function will be use to mark all nodes
+                 * once and will be not another "search"
+                 * if it is, probably will be in the case of "else"
+                 * */
 
                 if (openNodes.indexOf(d.name) > -1 && (d.type == "key")) {
                     d.operation = "selected";
@@ -493,21 +498,21 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
                 }
                 else if (d.type == "key_object") {
-                    if(d.children != null) {
+                    if (d.children != null) {
                         changeChildren(d);
                     }
 
-                    if(d._children[0] &&  object.indexOf(d._children[0].name) > -1) {
+                    if (d._children[0] && object.indexOf(d._children[0].name) > -1) {
                         d.operation = "selected";
                         changeChildren(d);
 
                         open.push([d, source]);
                     }
-                    else{
-                         d.operation = "none";
+                    else {
+                        d.operation = "none";
                     }
                 }
-                else{
+                else {
                     d.operation = "none";
                 }
 
@@ -540,22 +545,23 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
                 }
             }
             /*else{
-                if(d._children != null){
-                    changeChildren(d);
-                }
-            }*/
+             if(d._children != null){
+             changeChildren(d);
+             }
+             }*/
         });
     }
+
     /*
-    * ends Selecting path and objects functions
-    * */
+     * ends Selecting path and objects functions
+     * */
 
 
     /*
-    *
-    * Animation functions
-    *
-    * */
+     *
+     * Animation functions
+     *
+     * */
 
     function newAnimation(d, visited_keys, callback) {
         setTimeout(function () {
@@ -574,7 +580,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
             d.operation = "new";
             update(d);
-            if(callback) {
+            if (callback) {
                 // remove next node from visited nodes
                 var next = visited_keys.shift();
                 callback(next, visited_keys, newAnimation);
@@ -608,7 +614,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
             d.operation = "fade";
             update(d);
-            if(d.type == "object"){
+            if (d.type == "object") {
                 var parent = d.parent;
                 parent.children = null;
                 update(parent);
@@ -623,8 +629,8 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
                     fadingAnimation(next, visited_keys, newAnimation);
                     // should not have the case of trying call the callback from this point, since order
                 }
-            }else if(visited_keys.length == 0 && callback){
-                if(d.type != "key_object" && d.type != "object") {
+            } else if (visited_keys.length == 0 && callback) {
+                if (d.type != "key_object" && d.type != "object") {
                     callback(d, visited_keys);
                 }
             }
@@ -633,7 +639,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
     }
 
     function changingKeysAnimation(d, visited_keys) {
-        console.log("changing",d);
+        console.log("changing", d);
         visited_keys.reverse();
         var list = visited_keys;
         fadingAnimation(d, list, newAnimation);
@@ -652,9 +658,9 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
                 selectingAnimation(d.parent, visited_keys, callback);
             }
             else {
-                if(callback)
+                if (callback)
                     callback(d, visited_keys);
-                else{
+                else {
                     // case when the step animation called, need put key master in the array
                     var last = visited_keys.pop();
                     visited_keys.push(last);
@@ -669,18 +675,18 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
     var keys = [];
 
     // "Next" button calls this function directly
-    function stepAnimation(d){
+    function stepAnimation(d) {
 
-        if(step == 0){
+        if (step == 0) {
             // selecting step
-            selectingAnimation(d[0],keys);
+            selectingAnimation(d[0], keys);
             step = 1;
 
         }
-        else{
-            if(keys != []){
+        else {
+            if (keys != []) {
                 var node = keys.pop();
-                console.log("steo",d[0]);
+                console.log("steo", d[0]);
                 changingKeysAnimation(node, []);
             }
         }
@@ -688,7 +694,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
 
     function selectingAnimationMultiple(d, visited_keys, multiples, step, callback) {
-          setTimeout(function () {
+        setTimeout(function () {
             if (d.parent && d.operation != "selecting") {
                 d3.select("#delete_text").attr("value", "Selecting path from leaf to root");
                 $scope.current_animation_step = 1;
@@ -699,9 +705,9 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
                 selectingAnimationMultiple(d.parent, visited_keys, multiples, step, callback);
             }
             else {
-                if(callback) {
+                if (callback) {
                     //add master key
-                    if(visitedMultiple.length == 0){
+                    if (visitedMultiple.length == 0) {
                         visitedMultiple[0] = d;
                     }
 
@@ -710,8 +716,8 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
                     visitedMultiple = visitedMultiple.concat(visited_keys);
                     callback(multiples, step);
                 }
-                else{
-                   console.log("no callback");
+                else {
+                    console.log("no callback");
                 }
             }
         }, 750);
@@ -721,19 +727,20 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
     var mulCont = 0;
     var visitedMultiple = [];
     var waitOne = 1;
-    function stepAnimationMultiple(d, doStep){
 
-        if(step == 0) {
-            selectingAnimationMultiple(d[mulCont], [], d, doStep,  stepAnimationMultiple);
+    function stepAnimationMultiple(d, doStep) {
+
+        if (step == 0) {
+            selectingAnimationMultiple(d[mulCont], [], d, doStep, stepAnimationMultiple);
             mulCont = mulCont + 1;
 
-            if(mulCont == d.length)
+            if (mulCont == d.length)
                 step = 1;
         }
-        else{
-            if(visitedMultiple != []) {
-                if(doStep){
-                    if(waitOne){
+        else {
+            if (visitedMultiple != []) {
+                if (doStep) {
+                    if (waitOne) {
                         waitOne = 0;
                     }
                     else {
@@ -742,7 +749,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
                     }
                 }
                 else {
-                     var master = visitedMultiple.shift();
+                    var master = visitedMultiple.shift();
                     fadingAnimation(master, visitedMultiple, newAnimation);
 
                 }
@@ -765,14 +772,14 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
     }
 
     /*
-    * End animations functions
-    *
-    * */
+     * End animations functions
+     *
+     * */
 
 
     /*
-    * Drawing function
-    * */
+     * Drawing function
+     * */
     function update(source) {
 
         // Compute the new tree layout.
@@ -787,7 +794,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
         tree.separation(separation);
         function separation(a, b) {
-             return a.parent == b.parent ? 0.8 : 2;
+            return a.parent == b.parent ? 0.8 : 2;
         }
 
         // Update the nodes…
@@ -854,14 +861,14 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
         nodeEnter.append("svg:image")
             .attr("xlink:href", function (d) {
-                return d.type == "key" ? (d._children ? icon_key_closed :icon_key) : (
-                    d.type == "master" ?
-                        (d.key_type == "static" ? icon_masterkey :
-                            (d.key_type == "tpm" ? icon_masterkey_TPM : icon_masterkey_pass ) )
-                        : ( d.type == "object" ? icon_file :
-                    (d.type == "key_object" ? icon_object : (d.type == "up" || d.type == "down" ? icon_pluskey : icon_plusfile) )));
+                return d.type == "key" ? (d._children ? icon_key_closed : icon_key) : (
+                        d.type == "master" ?
+                            (d.key_type == "static" ? icon_masterkey :
+                                (d.key_type == "tpm" ? icon_masterkey_TPM : icon_masterkey_pass ) )
+                            : ( d.type == "object" ? icon_file :
+                                (d.type == "key_object" ? icon_object : (d.type == "up" || d.type == "down" ? icon_pluskey : icon_plusfile) )));
             })
-            .attr("x",  function (d) {
+            .attr("x", function (d) {
                 return d.type == "master" && d.operation == null ? "-30px" : "-19px"
             })
             .attr("y", function (d) {
@@ -874,7 +881,6 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
             .attr("height", function (d) {
                 return d.type == "master" && d.operation == null ? "150px" : "37px"
             });
-
 
 
         // the label of the node
@@ -899,23 +905,23 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
         // the new style after the transition
         nodeUpdate.select("image")
             .attr("xlink:href", function (d) {
-                if((d.type == "object" || d.type == "key_object") && d.operation == "selecting"){
+                if ((d.type == "object" || d.type == "key_object") && d.operation == "selecting") {
                     return d.type == "object" ? icon_file_delete : icon_key_delete;
                 }
-                if(d.type == "object" && d.parent.operation == "selected")
+                if (d.type == "object" && d.parent.operation == "selected")
                     return icon_selectedfile;
                 return d.operation == "selected" ? icon_selectedkey :
                     (d.operation == "new" ? ( d.type == "master" ? (
-                        d.key_type == "static" ? icon_masterkey_new :
-                            (d.key_type == "tpm" ? icon_masterkey_TPM_new : icon_masterkey_pass_new )
-                    ) : icon_pluskey) :
+                                d.key_type == "static" ? icon_masterkey_new :
+                                    (d.key_type == "tpm" ? icon_masterkey_TPM_new : icon_masterkey_pass_new )
+                            ) : icon_pluskey) :
                         (d.operation == "fade" ? "" : ( d.type == "key" ?
-                            (d._children ? icon_key_closed :icon_key) : (  d.type == "master" ?
-                        (d.key_type == "static" ? icon_masterkey :
-                            (d.key_type == "tpm" ? icon_masterkey_TPM : icon_masterkey_pass ) ) : ( d.type == "object" ? icon_file :
-                    (d.type == "key_object" ? icon_object : (d.type == "up" || d.type == "down" ? icon_pluskey : icon_plusfile) ))))));
+                                (d._children ? icon_key_closed : icon_key) : (  d.type == "master" ?
+                                    (d.key_type == "static" ? icon_masterkey :
+                                        (d.key_type == "tpm" ? icon_masterkey_TPM : icon_masterkey_pass ) ) : ( d.type == "object" ? icon_file :
+                                        (d.type == "key_object" ? icon_object : (d.type == "up" || d.type == "down" ? icon_pluskey : icon_plusfile) ))))));
             })
-            .attr("x",  function (d) {
+            .attr("x", function (d) {
                 return d.type == "master" ? "-30px" : "-19px"
             })
             .attr("y", function (d) {
@@ -956,7 +962,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
         nodeUpdate.select("text")
             .style("fill", function (d) {
-                if(d.type == "object" && d.parent.operation == "selected")
+                if (d.type == "object" && d.parent.operation == "selected")
                     return "#DA6B03";
             })
             .style("fill-opacity", function (d) {
@@ -985,14 +991,14 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
 
         // Enter any new links at the parent's previous position.
         link.enter().insert("path", "g")
-            /*.filter(function (d) {
-            console.log(d);
-            if (d.target.type != "down" && d.target.type != "up"){
-                return true;
-            }
-            else this.remove();
+        /*.filter(function (d) {
+         console.log(d);
+         if (d.target.type != "down" && d.target.type != "up"){
+         return true;
+         }
+         else this.remove();
 
-        })*/
+         })*/
             .attr("class", "link")
             .attr("d", function () {
                 var o = {x: source.x0, y: source.y0};
@@ -1021,10 +1027,10 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
     }
 
     /*
-    *
-    * Function for navigation and click events
-    *
-    * */
+     *
+     * Function for navigation and click events
+     *
+     * */
     function clickDown(d) {
         siblingsDown(d, d.parent);
         update(d);
@@ -1119,9 +1125,10 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
         window.open(link, "_blank");
 
     }
+
     /*
-    * Ends navigation and click events functions
-    * */
+     * Ends navigation and click events functions
+     * */
 
 
     /* The next functions are responsible for the translation of the
@@ -1140,7 +1147,7 @@ function SdosSheetController($rootScope, $state, $scope, $mdDialog, $http) {
             "children": children[0],
             "siblings_up": null,
             "siblings_down": children[1],
-            "type":"master",
+            "type": "master",
             "key_type": data.masterKeySource.type.toString()
         }];
     }
